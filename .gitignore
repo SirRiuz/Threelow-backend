@@ -1,1 +1,4 @@
+core/__pycache__
+threads/__pycache__
 db.sqlite3
+media/*
