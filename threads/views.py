@@ -27,7 +27,6 @@ class ThreadApiManager(APIView):
 
     """
        Se encarga de administrar la logica de los hilos
-
        URL =  api/v1/thread/
     """
 
@@ -39,7 +38,7 @@ class ThreadApiManager(APIView):
 
           GET = api/v1/thread/<threadId>/
         """
-        data = ThreadSerializer.get(Thread,threadId)
+        data = ThreadSerializer().get(Thread,threadId)
 
         if bool(data):
             return Response({
@@ -126,8 +125,6 @@ class ThreadApiManager(APIView):
             'messege':'Failed to delete thread'
         })
 
-
-        
 
 
 

@@ -9,7 +9,7 @@ from django.db import models
 
 # Rest_framework
 from rest_framework import fields, serializers
-from rest_framework.serializers import Serializer,ModelSerializer
+from rest_framework.serializers import (Serializer,ModelSerializer)
 
 
 # Utils
@@ -30,13 +30,16 @@ class ThreadSerializer(Serializer):
     text = serializers.CharField(required=True)
 
     def __generateRandomId(self) -> (str):
+        """
+          Genera un id random para un
+          hilo
+        """
         hashRAndom = hashlib.md5(str(datetime.datetime.now()).encode()).hexdigest()
         uuidRandom = str(uuid.uuid4()).replace('-','')[:15]
         randomId = hashRAndom+uuidRandom
         return randomId
 
     def create(self,model,data,ip,type,threadId,media) -> (dict):
-        #saveFile(media)
         if type == 'subthread':
             baseThreadObject = model.objects.get(id=threadId)
             threadObject = model.objects.create(
@@ -71,8 +74,7 @@ class ThreadSerializer(Serializer):
 
 
 
-    @staticmethod
-    def get(modelObject,threadId) -> (dict):
+    def get(self,modelObject,threadId) -> (dict):
         result = modelObject.objects.filter(id=threadId)
         
         if len(result) > 0:
@@ -87,7 +89,7 @@ class ThreadSerializer(Serializer):
                         'owner':threat.owner,
                         'text':threat.text,
                         'date':threat.date,
-                        'media_thread':getMediaFile(threat.id)
+                        'media_thread':threat.media_files
                     })
 
             threadData = ({
@@ -97,7 +99,7 @@ class ThreadSerializer(Serializer):
                     'location':''
                 },
                 'text':threadObject.text,
-                'media_thread':getMediaFile(threadObject.id),
+                'media_thread':threadObject.media_files,
                 'sub_treads':subThreadsList,
                 'date':threadObject.date
             })
@@ -107,4 +109,5 @@ class ThreadSerializer(Serializer):
         return {}
 
 
-        
+
+
