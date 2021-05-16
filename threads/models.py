@@ -7,6 +7,9 @@ from django.db import models
 from .media import getMediaFile
 
 
+# Python
+import random
+
 
 class Thread(models.Model):
 
@@ -61,6 +64,9 @@ class Thread(models.Model):
         return getMediaFile(self.id)
 
 
+    @property
+    def pointRank(self) -> (float):
+        return random.randint(0,10000)
 
     def __str__(self) -> (str):
         return self.id

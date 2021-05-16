@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'threads',
     'reactions',
-    'rest_framework'
+    'rest_framework',
+    'timeline'
 ]
 
 MIDDLEWARE = [
