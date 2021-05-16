@@ -25,8 +25,6 @@ def saveFile(fileList,threadId):
 def getMediaFile(threadId):
     
     filePath = MEDIA_ROOT+'/'+threadId
-
-    print(filePath)
     
     if os.path.exists(filePath):
         listFiles = []

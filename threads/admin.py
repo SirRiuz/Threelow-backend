@@ -10,4 +10,5 @@ from .models import Thread
 
 @admin.register(Thread)
 class ThreadsAdmin(admin.ModelAdmin):
-    pass
+    list_display = [ 'id','owner','text' ]
+    list_filter = [ 'owner' ]

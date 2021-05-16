@@ -24,7 +24,6 @@ from .media import saveFile
 
 
 class ThreadApiManager(APIView):
-
     """
        Se encarga de administrar la logica de los hilos
        URL =  api/v1/thread/
@@ -51,7 +50,6 @@ class ThreadApiManager(APIView):
             'status':'error',
             'messege':'An error occurred while making the request ...'
         },status=HTTP_400_BAD_REQUEST)
-
 
 
     def post(self,request,threadId=None) -> (Response):
@@ -99,7 +97,6 @@ class ThreadApiManager(APIView):
         },status=HTTP_400_BAD_REQUEST)
 
 
-
     def delete(self,request,threadId=None) -> (Response):
         """
           Se encarga de eliminar un hilo.
@@ -129,14 +126,12 @@ class ThreadApiManager(APIView):
 
 
 class SubThreadApiPagination(ListAPIView):
-
     """
       Se encarga de obtener el listado de los 
       subhilos de un hilo.
 
       GET = api/v1/thread/sub/<threadId>/
     """
-
     serializer_class = ThreadSerializerModel
     pagination_class = LimitOffsetPagination
     
@@ -146,7 +141,10 @@ class SubThreadApiPagination(ListAPIView):
         baseThread = Thread.objects.filter(id=threadId)
 
         if len(baseThread) > 0:
-            subThreadsList = Thread.objects.filter(toThread=baseThread[0]).order_by('-date')
+            subThreadsList = Thread.objects.filter(
+                toThread=baseThread[0]
+            ).order_by('-date')
+            
             return subThreadsList
         
         return []

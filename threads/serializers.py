@@ -4,7 +4,6 @@
 import datetime
 import uuid
 import hashlib
-from django.db import models
 
 
 # Rest_framework
@@ -14,7 +13,6 @@ from rest_framework.serializers import (Serializer,ModelSerializer)
 
 # Utils
 from .media import saveFile,getMediaFile
-
 from .models import Thread
 
 
@@ -23,6 +21,7 @@ class ThreadSerializerModel(ModelSerializer):
     class Meta():
         model = Thread
         fields = [ 'id','owner','ownerCity','text','media_files' ]
+
 
 
 class ThreadSerializer(Serializer):
@@ -79,18 +78,10 @@ class ThreadSerializer(Serializer):
         
         if len(result) > 0:
             threadObject = result[0]
-            subThreads = modelObject.objects.filter(toThread=threadObject)[:5]
-            subThreadsList = []
+            subThreads = modelObject.objects.filter(
+                toThread=threadObject
+            ).order_by('-date')[:4]
             
-            if len(subThreads) > 0:
-                for threat in subThreads:
-                    subThreadsList.append({
-                        'id':threat.id,
-                        'owner':threat.owner,
-                        'text':threat.text,
-                        'date':threat.date,
-                        'media_thread':threat.media_files
-                    })
 
             threadData = ({
                 'id':threadObject.id,
@@ -100,7 +91,7 @@ class ThreadSerializer(Serializer):
                 },
                 'text':threadObject.text,
                 'media_thread':threadObject.media_files,
-                'sub_treads':subThreadsList,
+                'sub_treads':subThreads.values('id','owner','text','date'),
                 'date':threadObject.date
             })
 

@@ -63,7 +63,7 @@ class Thread(models.Model):
 
 
     def __str__(self) -> (str):
-        return self.text
+        return self.id
 
 
 
