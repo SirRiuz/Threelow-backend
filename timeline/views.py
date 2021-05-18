@@ -10,8 +10,28 @@ from rest_framework.generics import ListAPIView
 from .serializers import TimeLineModelSerializer
 
 
+# Python
+import operator
+
+
 # Models
 from threads.models import Thread 
+
+
+
+class TimeLineTrendsApi(ListAPIView):
+
+    serializer_class = TimeLineModelSerializer
+    pagination_class = LimitOffsetPagination
+
+    def get_queryset(self):
+        allThreads = Thread.objects.filter(toThread=None)
+        thradList = sorted(
+            list(allThreads),
+            key=operator.attrgetter('pointRank'),
+            reverse=True
+        )
+        return thradList
 
 
 

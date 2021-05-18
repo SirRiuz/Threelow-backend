@@ -1,5 +1,9 @@
+# Python
+import datetime
+
 
 # Django
+from operator import le
 from django.db import models
 
 
@@ -7,8 +11,8 @@ from django.db import models
 from .media import getMediaFile
 
 
-# Python
-import random
+# Models
+from reactions.models import ThreadReaction
 
 
 class Thread(models.Model):
@@ -58,6 +62,24 @@ class Thread(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
 
+    @property
+    def subThreads(self):
+        subThreads = Thread.objects.filter(toThread=self).order_by('-date')[:5]
+        if subThreads:
+            subThreadResponse = []
+            for thread in subThreads:
+                subThreadResponse.append({
+                    'id':thread.id,
+                    'text':thread.text,
+                    'ownerCountry':thread.ownerCountry,
+                    'date':thread.date,
+                    'media_files':thread.media_files
+                })
+
+            return subThreadResponse
+
+        return []
+
 
     @property
     def media_files(self) -> (list):
@@ -65,8 +87,28 @@ class Thread(models.Model):
 
 
     @property
-    def pointRank(self) -> (float):
-        return random.randint(0,10000)
+    def pointRank(self) -> (int):
+        deltaTimeObject = datetime.datetime(
+            self.date.year,
+            self.date.month,
+            self.date.day,
+            self.date.hour,
+            self.date.minute,
+            self.date.second
+        )
+        lengthSubThreads = Thread.objects.filter(toThread=self)
+        lengthReactioThread = ThreadReaction.objects.filter(thread=self)
+
+        pointThread = len(lengthSubThreads) * 0.6
+        pointReaction = len(lengthReactioThread) * 0.3
+        devaluation = (datetime.datetime.now() - deltaTimeObject).days * 0.05
+        
+
+        rank = pointThread + pointReaction - devaluation
+        if rank < 0:
+            rank = 0
+
+        return rank
 
     def __str__(self) -> (str):
         return self.id
