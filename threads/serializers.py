@@ -91,6 +91,7 @@ class ThreadSerializer(Serializer):
                 },
                 'text':threadObject.text,
                 'media_thread':threadObject.media_files,
+                'reactionsPreview':threadObject.reactionsPreview,
                 'sub_treads':subThreads.values('id','owner','text','date'),
                 'date':threadObject.date
             })

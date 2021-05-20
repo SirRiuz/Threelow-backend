@@ -1,5 +1,6 @@
 # Python
 import datetime
+import operator
 
 
 # Django
@@ -12,7 +13,7 @@ from .media import getMediaFile
 
 
 # Models
-from reactions.models import ThreadReaction
+from reactions.models import ThreadReaction,Reaction
 
 
 class Thread(models.Model):
@@ -60,6 +61,34 @@ class Thread(models.Model):
 
     isMediaFiles = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now_add=True)
+
+
+    @property
+    def reactionsPreview(self) -> (dict):
+        reactions = ThreadReaction.objects.filter(thread=self).values('reaction__name','reaction__id','reaction__image')
+        reactionObject = ({ })
+
+        for rec in list(reactions):
+            if rec['reaction__name'] in reactionObject:
+                reactionObject[rec['reaction__name']]['count'] += 1
+
+            else:
+                reactionObject[rec['reaction__name']] = ({
+                    'count':1,
+                    'name':rec['reaction__name'],
+                    'url':rec['reaction__image']
+                })
+
+        orderReactionList = sorted(
+            list(reactionObject.values()),
+            key=operator.itemgetter('count'),
+            reverse=True
+        )
+
+        return {
+            'length':len(reactions),
+            'preview':orderReactionList[:4]
+        }
 
 
     @property

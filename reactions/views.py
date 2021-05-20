@@ -18,37 +18,6 @@ from threads.models import Thread
 
 class ReactionsManager(APIView):
 
-
-    def get(self,request,threadId=None) -> (Response):
-        """
-          Se encarga de mostrar todas las 
-          reacciones existentes.
-
-          GET = api/v1/thread/reactions/
-        """
-        if threadId is None:
-            query = Reaction.objects.all()
-            result =  ThreadSerailizerModel(query,many=True)
-
-            return Response({
-                'status':'ok',
-                'data':result.data
-            },status=HTTP_200_OK)
-
-        data = ThreadSerailizerModel().get(threadId,ThreadReaction,Thread)
-
-        if bool(data):
-            return Response({
-                'status':'ok',
-                'data':data
-            },status=HTTP_200_OK)
-        
-        return Response({
-            'status':'error',
-            'messege':'Bad request ...'
-        },status=HTTP_400_BAD_REQUEST)
-
-
     def post(self,request,threadId=None) -> (Response):
 
         """

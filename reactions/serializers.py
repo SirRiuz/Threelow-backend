@@ -84,16 +84,4 @@ class ThreadSerailizerModel(serializers.ModelSerializer):
         fields = '__all__'
 
 
-    def get(self,threadId,modelReaction,modelThread) -> (dict):
-        threadObject = modelThread.objects.filter(id=threadId)
-
-        if len(threadObject) > 0:
-            threadObject = threadObject[0]
-            reactionList = modelReaction.objects.filter(thread=threadObject)
-            data = ThreadReactionSerializerModel(reactionList,many=True)
-            
-            return processReactionData(data.data)
-
-
-
 

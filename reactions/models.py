@@ -58,6 +58,6 @@ class ThreadReaction(models.Model):
 
 
     def __str__(self) -> (str):
-        return self.ownerReaction
+        return self.reaction.name
     
 
