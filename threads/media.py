@@ -10,7 +10,9 @@ def saveFile(fileList,threadId):
     
     if bool(fileList):
         path = os.path.join('media',str(threadId))
-        os.mkdir(path)
+        os.makedirs(path)
+
+        print('CREATE ->',path)
 
         for key,item in fileList.items():
             pathFile = MEDIA_ROOT+'/'+str(threadId)+'/'+item.name
