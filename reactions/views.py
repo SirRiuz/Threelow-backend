@@ -7,7 +7,7 @@ from rest_framework.status import *
 
 
 # Serializers
-from .serializers import (ThreadSerailizerModel,ThreadReactionSerializer)
+from .serializers import (ThreadSerailizerModel,ThreadReactionSerializer,ReactionSerializerModel)
 
 
 # Models
@@ -17,6 +17,14 @@ from threads.models import Thread
 
 
 class ReactionsManager(APIView):
+
+    def get(self,request) -> (Response):
+        query = Reaction.objects.all()
+        serializer = ReactionSerializerModel(query,many=True)
+        return Response({
+            'status':'ok',
+            'data':serializer.data
+        })
 
     def post(self,request,threadId=None) -> (Response):
 

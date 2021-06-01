@@ -1,6 +1,7 @@
 
 
 # Django
+from django.db import models
 from django.db.models import fields
 from rest_framework import serializers
 
@@ -12,6 +13,12 @@ from .models import Reaction,ThreadReaction
 # Utils
 from .utils import processReactionData
 
+
+
+class ReactionSerializerModel(serializers.ModelSerializer):
+    class Meta(object):
+        model = Reaction
+        fields = '__all__'
 
 
 class ThreadReactionSerializerModel(serializers.ModelSerializer):
