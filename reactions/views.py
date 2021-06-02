@@ -18,7 +18,7 @@ from threads.models import Thread
 
 class ReactionsManager(APIView):
 
-    def get(self,request) -> (Response):
+    def get(self,request,threadId=None) -> (Response):
         query = Reaction.objects.all()
         serializer = ReactionSerializerModel(query,many=True)
         return Response({
@@ -38,10 +38,10 @@ class ReactionsManager(APIView):
         if threadId is None:
             return Response({
                 'status':'error',
-                'messege':'Bad request ...'
+                'messege':'Fail thread id'
             },status=HTTP_400_BAD_REQUEST)
 
-
+        print(request.data)
         serializer = ThreadReactionSerializer(data=request.data)
 
         if serializer.is_valid():
