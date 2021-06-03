@@ -7,7 +7,7 @@ from rest_framework.status import *
 
 
 # Serializers
-from .serializers import (ThreadSerailizerModel,ThreadReactionSerializer,ReactionSerializerModel)
+from .serializers import (ThreadReactionSerializer,ReactionSerializerModel)
 
 
 # Models
@@ -21,6 +21,22 @@ class ReactionsManager(APIView):
     def get(self,request,threadId=None) -> (Response):
         query = Reaction.objects.all()
         serializer = ReactionSerializerModel(query,many=True)
+
+        if threadId:
+            threadObject = Thread.objects.filter(id=threadId)
+            if threadObject:
+                threadObject = threadObject[0]
+                return Response({
+                    'status':'ok',
+                    'data':threadObject.reactionsPreview
+                })
+
+
+            return Response({
+                'status':'error',
+                'messege':'Thread not exist'
+            })
+
         return Response({
             'status':'ok',
             'data':serializer.data
@@ -41,7 +57,6 @@ class ReactionsManager(APIView):
                 'messege':'Fail thread id'
             },status=HTTP_400_BAD_REQUEST)
 
-        print(request.data)
         serializer = ThreadReactionSerializer(data=request.data)
 
         if serializer.is_valid():
