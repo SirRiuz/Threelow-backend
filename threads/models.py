@@ -102,7 +102,8 @@ class Thread(models.Model):
                     'text':thread.text,
                     'ownerCountry':thread.ownerCountry,
                     'date':thread.date,
-                    'media_files':thread.media_files
+                    'media_files':thread.media_files,
+                    'reactionsPreview':thread.reactionsPreview
                 })
 
             return subThreadResponse
