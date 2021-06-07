@@ -20,7 +20,7 @@ from .models import Thread
 class ThreadSerializerModel(ModelSerializer):
     class Meta():
         model = Thread
-        fields = [ 'id','owner','ownerCity','text','media_files' ]
+        fields = [ 'id','text','pointRank','ownerCountry','date','media_files','subThreads','reactionsPreview' ]
 
 
 

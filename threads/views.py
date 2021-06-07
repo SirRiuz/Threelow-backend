@@ -144,7 +144,7 @@ class SubThreadApiPagination(ListAPIView):
             subThreadsList = Thread.objects.filter(
                 toThread=baseThread[0]
             ).order_by('-date')
-            
+
             return subThreadsList
         
         return []
