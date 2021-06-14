@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-wup9f7=#x%%+_xx0yj(6nf3i_wj2q#3md_u3w^%ksdld7he4)q'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -127,6 +127,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
+
+
+AWS_KEY = ''
+AWS_SECRET_KEY = ''
+AWS_STATIC_URL = ''
+
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
