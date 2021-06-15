@@ -5,6 +5,7 @@ import mimetypes
 import hashlib
 import logging
 import json
+from typing import List
 
 
 # Django
@@ -15,7 +16,12 @@ from core.settings import MEDIA_ROOT
 from cdnmanager.controller import AwsControll
 
 
-def saveFile(fileList,threadId):
+# Libs
+from .pixels import PixelController
+
+
+
+def saveFile(fileList:str,threadId:str) -> (None):
 
     """
       Esta funcion se encarga de guardar los datos de los
@@ -37,10 +43,15 @@ def saveFile(fileList,threadId):
                 isVideo = False
                 fileName = items.name + threadId
                 fileHashName = hashlib.sha256(fileName.encode()).hexdigest()
+                pixelColor = '#000000'
                 fileName = '{hashname}.{format}'.format(
                     hashname=fileHashName,
                     format=items.name.split('.')[1]
                 )
+
+                if not isVideo:
+                    pixelColor = PixelController().getPixelColor(items)
+
 
                 if mimetypes.guess_type(fileName)[0].count('video') > 0:
                     isVideo = True
@@ -48,7 +59,8 @@ def saveFile(fileList,threadId):
 
                 fileListUrls.append({
                     'isVideo':isVideo,
-                    'url':AwsControll().getObjectUrl(fileName)
+                    'url':AwsControll().getObjectUrl(fileName),
+                    'colorPixel':pixelColor
                 })
 
                 mediaDataCache['mediaCache'] = fileListUrls
@@ -58,13 +70,18 @@ def saveFile(fileList,threadId):
                     logging.error('Error al subir el archivo a amazon s3 ....')
         
 
-        file.write(json.dumps(mediaDataCache,indent=2))
+        file.write(
+            json.dumps(
+                mediaDataCache,
+                indent=2
+            )
+        )
         file.close()
 
 
 
 
-def getMediaFile(threadId):
+def getMediaFile(threadId:str) -> (list):
 
     """
       Este metodo se encarga de guardar

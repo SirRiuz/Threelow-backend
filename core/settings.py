@@ -129,9 +129,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 
-AWS_KEY = ''
-AWS_SECRET_KEY = ''
-AWS_STATIC_URL = ''
+AWS_KEY = 'AKIAU2FAQIA2QUUULZBF'
+AWS_SECRET_KEY = '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'
+AWS_STATIC_URL = 'https://d32b4xwni880fk.cloudfront.net/media/'
 
 
 STATIC_URL = '/static/'
