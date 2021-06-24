@@ -11,9 +11,15 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+MEDIA_CACHE_DIR = os.path.join(BASE_DIR,'media')
+
+
+if not os.path.exists(MEDIA_CACHE_DIR):
+    os.mkdir(MEDIA_CACHE_DIR)
 
 
 # Quick-start development settings - unsuitable for production
@@ -23,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-wup9f7=#x%%+_xx0yj(6nf3i_wj2q#3md_u3w^%ksdld7he4)q'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
