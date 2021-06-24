@@ -76,7 +76,7 @@ class Thread(models.Model):
                 reactionObject[rec['reaction__name']] = ({
                     'count':1,
                     'name':rec['reaction__name'],
-                    'url':rec['reaction__image']
+                    'url':'media/{path}'.format(path=rec['reaction__image'])
                 })
 
         orderReactionList = sorted(
