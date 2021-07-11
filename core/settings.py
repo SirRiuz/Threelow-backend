@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'threads',
     'reactions',
     'rest_framework',
-    'timeline'
+    'timeline',
+    'hashtag'
 ]
 
 MIDDLEWARE = [

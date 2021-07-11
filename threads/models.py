@@ -134,7 +134,7 @@ class Thread(models.Model):
         devaluation = (datetime.datetime.now() - deltaTimeObject).days * 0.05
         
 
-        rank = pointThread + pointReaction - devaluation
+        rank = pointThread + pointReaction - devaluation        
         if rank < 0:
             rank = 0
 

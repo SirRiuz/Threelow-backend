@@ -4,6 +4,7 @@
 import datetime
 import uuid
 import hashlib
+import re
 
 
 # Rest_framework
@@ -14,6 +15,10 @@ from rest_framework.serializers import (Serializer,ModelSerializer)
 # Utils
 from .media import saveFile,getMediaFile
 from .models import Thread
+
+
+# Models
+from hashtag.models import HashTag
 
 
 
@@ -38,7 +43,22 @@ class ThreadSerializer(Serializer):
         randomId = hashRAndom+uuidRandom
         return randomId
 
+    def __createTag(self,tags,thread) -> (None):
+
+        """
+          Se encarga de asignar un tag a un hiko
+        """
+
+        for tag in tags:
+            HashTag.objects.create(
+                tagName=f'#{tag}',
+                thread=thread
+            )
+
+
     def create(self,model,data,ip,type,threadId,media) -> (dict):
+        tagList = re.findall(r"#(\w+)",data['text'])
+
         if type == 'subthread':
             baseThreadObject = model.objects.get(id=threadId)
             threadObject = model.objects.create(
@@ -57,6 +77,7 @@ class ThreadSerializer(Serializer):
                 text=data['text'],
             )
             saveFile(media,threadObject.id)
+            self.__createTag(tagList,threadObject)
             return ({ 'id':threadObject.id,'mesege':'The thread has been created' })
 
 
