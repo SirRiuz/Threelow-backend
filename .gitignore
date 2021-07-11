@@ -5,3 +5,4 @@ timeline/__pycache__/*
 cdnmanager/__pycache__/*
 db.sqlite3
 media/*
+core/__pycache__/wsgi.cpython-38.pyc
