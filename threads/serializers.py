@@ -106,6 +106,7 @@ class ThreadSerializer(Serializer):
 
             threadData = ({
                 'id':threadObject.id,
+                'rank':threadObject.pointRank,
                 'owner':{
                     'ip':threadObject.owner,
                     'location':''

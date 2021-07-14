@@ -13,7 +13,7 @@ from .media import getMediaFile
 
 
 # Models
-from reactions.models import ThreadReaction,Reaction
+from reactions.models import ThreadReaction
 
 
 class Thread(models.Model):
@@ -56,9 +56,6 @@ class Thread(models.Model):
         help_text='Texto del hilo'
     )
 
-    # ownerLocation
-    # ownerCorns
-
     isMediaFiles = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now_add=True)
 
@@ -93,18 +90,31 @@ class Thread(models.Model):
 
     @property
     def subThreads(self):
-        subThreads = Thread.objects.filter(toThread=self).order_by('-date')[:5]
+        subThreads = Thread.objects.filter(toThread=self)[:5]
+
         if subThreads:
             subThreadResponse = []
             for thread in subThreads:
-                subThreadResponse.append({
-                    'id':thread.id,
-                    'text':thread.text,
-                    'ownerCountry':thread.ownerCountry,
-                    'date':thread.date,
-                    'media_files':thread.media_files,
-                    'reactionsPreview':thread.reactionsPreview
-                })
+                if int(thread.pointRank)>=5:
+                    subThreadResponse.append({
+                        'rank':thread.pointRank,
+                        'id':thread.id,
+                        'text':thread.text,
+                        'ownerCountry':thread.ownerCountry,
+                        'date':thread.date,
+                        'media_files':thread.media_files,
+                        'reactionsPreview':thread.reactionsPreview
+                    })
+
+                if len(subThreads) == 1:
+                    return ({
+                        'id':thread.id,
+                        'text':thread.text,
+                        'ownerCountry':thread.ownerCountry,
+                        'date':thread.date,
+                        'media_files':thread.media_files,
+                        'reactionsPreview':thread.reactionsPreview
+                    })
 
             return subThreadResponse
 
@@ -131,7 +141,7 @@ class Thread(models.Model):
 
         pointThread = len(lengthSubThreads) * 0.6
         pointReaction = len(lengthReactioThread) * 0.3
-        devaluation = (datetime.datetime.now() - deltaTimeObject).days * 0.05
+        devaluation = (datetime.datetime.now() - deltaTimeObject).days * 0.04
         
 
         rank = pointThread + pointReaction - devaluation        
