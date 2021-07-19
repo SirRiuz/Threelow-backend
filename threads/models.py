@@ -1,6 +1,7 @@
 # Python
 import datetime
 import operator
+import hashlib
 
 
 # Django
@@ -101,7 +102,14 @@ class Thread(models.Model):
             threadList.append({
                 'rank':thread.pointRank,
                 'id':thread.id,
-                'text':thread.text
+                'text':thread.text,
+                'media_files':thread.media_files,
+                'reactionsPreview':thread.reactionsPreview,
+                'date':'',
+                'owner':{
+                    'agent':hashlib.sha256(thread.owner.encode()).hexdigest(),
+                    'country':thread.ownerCountry
+                }
             })
             prom = prom + thread.pointRank
         
