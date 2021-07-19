@@ -90,35 +90,29 @@ class Thread(models.Model):
 
     @property
     def subThreads(self):
-        subThreads = Thread.objects.filter(toThread=self)[:5]
+        #print(f'to -> {self.id}')
+        subThreads = Thread.objects.filter(toThread=self)
+        prom = 0
+        threadList = []
+        newThreadList = []
 
-        if subThreads:
-            subThreadResponse = []
-            for thread in subThreads:
-                if int(thread.pointRank)>=5:
-                    subThreadResponse.append({
-                        'rank':thread.pointRank,
-                        'id':thread.id,
-                        'text':thread.text,
-                        'ownerCountry':thread.ownerCountry,
-                        'date':thread.date,
-                        'media_files':thread.media_files,
-                        'reactionsPreview':thread.reactionsPreview
-                    })
+        for thread in subThreads:
+            #print(f'{thread.text} -> {thread.pointRank}')
+            threadList.append({
+                'rank':thread.pointRank,
+                'id':thread.id,
+                'text':thread.text
+            })
+            prom = prom + thread.pointRank
+        
+        #print('\n',prom/len(subThreads))
+        threadList = sorted(threadList,key=operator.itemgetter('rank'),reverse=True)[:4]
+        for threadItem in threadList:
+            if threadItem['rank'] >= (prom/len(subThreads)):
+                newThreadList.append(threadItem)
 
-                if len(subThreads) == 1:
-                    return ({
-                        'id':thread.id,
-                        'text':thread.text,
-                        'ownerCountry':thread.ownerCountry,
-                        'date':thread.date,
-                        'media_files':thread.media_files,
-                        'reactionsPreview':thread.reactionsPreview
-                    })
 
-            return subThreadResponse
-
-        return []
+        return newThreadList
 
 
     @property
