@@ -5,7 +5,7 @@ import hashlib
 
 
 # Django
-from operator import le
+#from operator import le
 from django.db import models
 
 
@@ -15,6 +15,8 @@ from .media import getMediaFile
 
 # Models
 from reactions.models import ThreadReaction
+
+
 
 
 class Thread(models.Model):
@@ -34,8 +36,6 @@ class Thread(models.Model):
         null=False,
         help_text='Dueño del hilo'
     )
-
-    #ownerLocation = ''
 
     ownerCountry = models.CharField(
         max_length=10,
@@ -91,21 +91,19 @@ class Thread(models.Model):
 
     @property
     def subThreads(self):
-        #print(f'to -> {self.id}')
         subThreads = Thread.objects.filter(toThread=self)
         prom = 0
         threadList = []
         newThreadList = []
 
         for thread in subThreads:
-            #print(f'{thread.text} -> {thread.pointRank}')
             threadList.append({
                 'rank':thread.pointRank,
                 'id':thread.id,
                 'text':thread.text,
                 'media_files':thread.media_files,
                 'reactionsPreview':thread.reactionsPreview,
-                'date':'',
+                'date':thread.date.strftime("%D"), # XX XX XXXX
                 'owner':{
                     'agent':hashlib.sha256(thread.owner.encode()).hexdigest(),
                     'country':thread.ownerCountry
@@ -126,6 +124,12 @@ class Thread(models.Model):
     @property
     def media_files(self) -> (list):
         return getMediaFile(self.id)
+
+    
+    @property
+    def subThreadsSize(self) -> (int):
+        subThreads = Thread.objects.filter(toThread=self)
+        return len(subThreads)
 
 
     @property
@@ -152,8 +156,11 @@ class Thread(models.Model):
 
         return rank
 
+
+
     def __str__(self) -> (str):
         return self.id
+
 
 
 

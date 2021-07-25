@@ -1,12 +1,13 @@
 
 
 # Rest_framework
-from django.db.models import query
-from rest_framework import serializers
+#from django.db.models import query
+#from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import *
 from rest_framework.generics import ListAPIView
+from rest_framework.decorators import api_view
 from rest_framework.pagination import LimitOffsetPagination
 
 
@@ -19,7 +20,35 @@ from .models import (Thread)
 
 
 # Utils
-from .media import saveFile
+#from .media import saveFile
+
+
+
+@api_view(['GET'])
+def checkOwner(request,threadId) -> (Response):
+    """
+       Se encarga de comprobar si un hilo a sido 
+       creado por la usuario que envia la solicitud.
+
+       En caso que sea el creador (Owner) envia un True
+       de lo contrario enviara False
+
+       GET /api/v1/thread/check-owner/<threadId>/
+    """
+
+    clienIp = request.META['REMOTE_ADDR']
+    threadObject = Thread.objects.filter(id=threadId)
+
+    if not bool(len(threadObject)):
+        return Response({ 'result':False })
+
+    if not threadObject[0].owner == clienIp:
+        return Response({ 'result':False }) 
+
+
+    return Response({ 'result':True })
+
+
 
 
 
@@ -69,6 +98,7 @@ class ThreadApiManager(APIView):
         obSerailizer = ThreadSerializer(data=request.data)
         isValid = obSerailizer.is_valid()
 
+
         if isValid:
             data = obSerailizer.create(
                 Thread,
@@ -76,7 +106,8 @@ class ThreadApiManager(APIView):
                 clientIp,
                 threadType,
                 threadId,
-                request.FILES
+                request.FILES,
+                obSerailizer.data['countryCode']
             )
 
             if bool(data):
@@ -148,5 +179,8 @@ class SubThreadApiPagination(ListAPIView):
             return subThreadsList
         
         return []
+
+
+
 
 

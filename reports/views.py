@@ -35,7 +35,11 @@ class ReportManager(APIView):
                 'messege':'Bad thread id...'
             },status=status.HTTP_400_BAD_REQUEST)
 
-        result = serializer.create(serializer.data,Reports,thread[0])
+        result = serializer.create(
+            serializer.data,
+            Reports,thread[0],
+            user=request.META['REMOTE_ADDR']
+        )
 
         return Response({
             'status':'ok',

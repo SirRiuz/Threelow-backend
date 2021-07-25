@@ -6,15 +6,14 @@ from rest_framework import serializers
 
 class ReportSerializer(serializers.Serializer):
 
-    user = serializers.CharField(required=True)
     thread = serializers.CharField(required=True)
     motive = serializers.CharField(required=True)
 
 
-    def create(self,data,model,thread) -> (dict):
+    def create(self,data,model,thread,user) -> (dict):
         data = model.objects.create(
             motive=data['motive'],
-            user=data['user'],
+            user=user,
             to=thread
         )
 
