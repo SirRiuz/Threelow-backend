@@ -25,7 +25,7 @@ from hashtag.models import HashTag
 class ThreadSerializerModel(ModelSerializer):
     class Meta():
         model = Thread
-        fields = [ 'id','isOwner','text','pointRank','ownerCountry','date','media_files','subThreads','reactionsPreview' ]
+        fields = [ 'id','text','pointRank','ownerCountry','date','media_files','subThreads','reactionsPreview' ]
 
 
 
