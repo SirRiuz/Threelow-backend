@@ -12,5 +12,6 @@ urlpatterns = [
     path('api/v1/',include('hashtag.urls')),
     path('api/v1/',include('reactions.urls')),
     path('api/v1/',include('timeline.urls')),
-    path('api/v1/',include('reports.urls'))
+    path('api/v1/',include('reports.urls')),
+    path('api/v1/',include('search.urls'))
 ] + static(MEDIA_URL , document_root=MEDIA_ROOT)
