@@ -27,6 +27,13 @@ class TimeLineTrendsApi(ListAPIView):
 
 
     def get_queryset(self) -> (list):
+
+        if bool(self.request.GET.get('list')):
+            listId = self.request.GET.get('list').split(':')
+            query = Thread.objects.filter(id__in=listId)
+            return query
+
+
         if bool(self.request.GET.get('tag')):
             tag = self.request.GET.get('tag')
             query = HashTag.objects.filter(tagName=f'#{tag}')
@@ -59,6 +66,7 @@ class TimeLineNewApi(ListAPIView):
     def get_queryset(self) -> (list):
         query = Thread.objects.filter(toThread=None).order_by('-date')
         return query
+
 
 
 
