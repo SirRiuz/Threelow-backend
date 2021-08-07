@@ -151,3 +151,8 @@ MEDIA_ROOT = 'media'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+TRANSLATE_CONTROLLER_DIR = f'{BASE_DIR}/translator/translate.py'
+print(TRANSLATE_CONTROLLER_DIR)
+
