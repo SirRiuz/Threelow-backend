@@ -23,7 +23,7 @@ class TranslatorSerializer(serializers.Serializer):
 
         result = subprocess.check_output(f'python3 {TRANSLATE_CONTROLLER_DIR} {tl} {to} "{text}"',shell=True)
         #print(str(result))
-        return result
+        return result.decode("utf8").replace('\n','')
 
 
 

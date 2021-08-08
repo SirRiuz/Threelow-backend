@@ -25,7 +25,7 @@ from hashtag.models import HashTag
 class ThreadSerializerModel(ModelSerializer):
     class Meta():
         model = Thread
-        fields = [ 'id','text','pointRank','ownerCountry','date','media_files','subThreads','reactionsPreview' ]
+        fields = [ 'id','text','naviteLenguaje','pointRank','ownerCountry','date','media_files','subThreads','reactionsPreview' ]
 
 
 
@@ -33,6 +33,7 @@ class ThreadSerializer(Serializer):
 
     text = serializers.CharField(required=True)
     countryCode = serializers.CharField(required=True)
+    nativeLenguaje = serializers.CharField(required=True)
 
     def __generateRandomId(self) -> (str):
         """
@@ -59,7 +60,6 @@ class ThreadSerializer(Serializer):
 
     def create(self,model,data,ip,type,threadId,media,countryCode) -> (dict):
         tagList = re.findall(r"#(\w+)",data['text'])
-
         if type == 'subthread':
             baseThreadObject = model.objects.get(id=threadId)
             threadObject = model.objects.create(
@@ -67,7 +67,8 @@ class ThreadSerializer(Serializer):
                 owner=ip,
                 text=data['text'],
                 toThread=baseThreadObject,
-                ownerCountry=countryCode
+                ownerCountry=countryCode,
+                nativeLenguaje=data['nativeLenguaje']
             )
             saveFile(media,threadObject.id)
             return ({ 'id':threadObject.id,'mesege':'The sub thread has been created' })
@@ -77,7 +78,8 @@ class ThreadSerializer(Serializer):
                 id=self.__generateRandomId(),
                 owner=ip,
                 text=data['text'],
-                ownerCountry=countryCode
+                ownerCountry=countryCode,
+                nativeLenguaje=data['nativeLenguaje']
             )
             saveFile(media,threadObject.id)
             self.__createTag(tagList,threadObject)

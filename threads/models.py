@@ -30,6 +30,13 @@ class Thread(models.Model):
         blank=True
     )
 
+    nativeLenguaje = models.CharField(
+        max_length=20,
+        default='es',
+        null=False,
+        blank=False
+    )
+
     owner = models.CharField(
         max_length=150,
         blank=False,
@@ -102,6 +109,8 @@ class Thread(models.Model):
                 'id':thread.id,
                 'text':thread.text,
                 'media_files':thread.media_files,
+                'subThreadsSize':thread.subThreadsSize,
+                'nativeLenguaje':thread.nativeLenguaje,
                 'reactionsPreview':thread.reactionsPreview,
                 'date':thread.date.strftime("%D"), # XX XX XXXX
                 'owner':{

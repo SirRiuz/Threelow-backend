@@ -12,4 +12,4 @@ from threads.models import Thread
 class TimeLineModelSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = Thread
-        fields = [ 'id','text','pointRank','ownerCountry','date','media_files','subThreadsSize','subThreads','reactionsPreview' ]
+        fields = [ 'id','text','nativeLenguaje','pointRank','ownerCountry','date','media_files','subThreadsSize','subThreads','reactionsPreview' ]

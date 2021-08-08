@@ -43,7 +43,11 @@ class Translator(object):
         if procesHtml:
             text = ''
             self.__bs4 = BeautifulSoup(procesHtml,'html.parser')
-            spanResult = self.__bs4.html.body.find_all('span', class_='JLqJ4b ChMk0b',jsaction='agoMJf:PFBcW;usxOmf:aWLT7;jhKsnd:P7O7bd,F8DmGf;Q4AGo:Gm7gYd,qAKMYb;uFUCPb:pvnm0e,pfE8Hb,PFBcW;f56efd:dJXsye;EnoYf:KNzws,ZJsZZ,JgVSJc;zdMJQc:cCQNKb,ZJsZZ,zchEXc;Ytrrj:JJDvdc;tNR8yc:GeFvjb;oFN6Ye:hij5Wb')
+            spanResult = self.__bs4.html.body.find_all(
+                'span',
+                class_='JLqJ4b ChMk0b',
+                jsaction='agoMJf:PFBcW;usxOmf:aWLT7;jhKsnd:P7O7bd,F8DmGf;Q4AGo:Gm7gYd,qAKMYb;uFUCPb:pvnm0e,pfE8Hb,PFBcW;f56efd:dJXsye;EnoYf:KNzws,ZJsZZ,JgVSJc;zdMJQc:cCQNKb,ZJsZZ,zchEXc;Ytrrj:JJDvdc;tNR8yc:GeFvjb;oFN6Ye:hij5Wb'
+            )
 
             for spanItem in spanResult:
                 text = text + ' ' + spanItem.span.text
@@ -80,5 +84,7 @@ text = Translator(
 # python3 translate__.py tl to "text"
 
 print(text)
+
+
 
 
