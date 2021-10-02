@@ -7,7 +7,9 @@ import requests
 from core.settings import (
     AWS_KEY,
     AWS_SECRET_KEY,
-    AWS_STATIC_URL
+    AWS_STATIC_URL,
+    LOCAL_STATIC_URL,
+    MEDIA_CACHE_TEST_DIR
 )
 
 # Boto
@@ -33,7 +35,7 @@ class AwsControll(object):
         return url
 
 
-    def uploadFile(self,file:object ,isVideo:bool) -> (dict):
+    def uploadFile(self,file:object ,isVideo:bool,mode='production') -> (dict):
         """
           Esta funcion se encarga de subir un objeto (Archivo)
           a amazon S3 utilizando el SDK boto3
@@ -44,26 +46,43 @@ class AwsControll(object):
             'objectUrl':''
         })
 
-        try:
-            clientObject = boto3.client(
-                's3',
-                aws_access_key_id=AWS_KEY,
-                aws_secret_access_key=AWS_SECRET_KEY
-            )
-            objectPath = 'media/'+file.name
-            clientObject.upload_fileobj(file,'threlow',objectPath)
-            objectUrl = '{aws_static_url}{objectP}'.format(
-                aws_static_url=AWS_STATIC_URL,
-                objectP=file.name
-            )
 
-            data['objectUrl'] = objectUrl
+        if mode == 'production':
+            try:
+                clientObject = boto3.client(
+                    's3',
+                    aws_access_key_id=AWS_KEY,
+                    aws_secret_access_key=AWS_SECRET_KEY
+                )
+                objectPath = 'media/'+file.name
+                clientObject.upload_fileobj(file,'threlow',objectPath)
+                objectUrl = '{aws_static_url}{objectP}'.format(
+                    aws_static_url=AWS_STATIC_URL,
+                    objectP=file.name
+                )
+
+                data['objectUrl'] = objectUrl
+                if not isVideo:
+                    data['pixelColor'] = self.__getPixelColor(objectUrl)
+
+                return data
+            
+            except Exception as e:
+                raise Exception(str(e))
+
+
+        elif mode == 'test':
+            # Save file in local buket
+            saveMedia = open(f'{MEDIA_CACHE_TEST_DIR}/{file.name}','wb')
+            saveMedia.write(file.read())
+            
             if not isVideo:
-                data['pixelColor'] = self.__getPixelColor(objectUrl)
+                pixelColor = PixelController(mode='test').getPixelColor(file)
+                data['pixelColor'] = pixelColor
 
+            data['objectUrl'] = f'{LOCAL_STATIC_URL}/media/mediatest/{file.name}'
             return data
-        
-        except Exception as e:
-            raise Exception(str(e))
-            return False
+                    
+        else:
+            print('Fail mode')
 

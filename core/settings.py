@@ -16,11 +16,16 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_CACHE_DIR = os.path.join(BASE_DIR,'media')
+MEDIA_CACHE_TEST_DIR = os.path.join(BASE_DIR,'media/mediatest')
 
 
 if not os.path.exists(MEDIA_CACHE_DIR):
     os.mkdir(MEDIA_CACHE_DIR)
 
+
+if not os.path.exists(MEDIA_CACHE_TEST_DIR):
+    os.mkdir(MEDIA_CACHE_TEST_DIR)
+    
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -137,9 +142,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 
-AWS_KEY = 'AKIAU2FAQIA2QUUULZBF'
-AWS_SECRET_KEY = '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'
-AWS_STATIC_URL = 'https://d32b4xwni880fk.cloudfront.net/media/'
+AWS_KEY = ''
+AWS_SECRET_KEY = ''
+AWS_STATIC_URL = ''
+LOCAL_STATIC_URL = 'https://orange-gecko-65.loca.lt'
 
 
 STATIC_URL = '/static/'

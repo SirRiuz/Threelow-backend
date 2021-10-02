@@ -51,15 +51,18 @@ def saveFile(fileList:str,threadId:str) -> (None):
                 mediaDataCache['mediaCache'] = fileListUrls
                 items.name = fileName
                 
-                data = AwsControll().uploadFile(items,isVideo)
-                if not bool(data):
+                data = AwsControll().uploadFile(items,isVideo,mode='test')
+
+                if bool(data):
+                    fileListUrls.append({
+                        'isVideo':isVideo,
+                        'pixel':data['pixelColor'],
+                        'url':data['objectUrl']
+                    })
+                
+                else:
                     logging.error('Error al subir el archivo a amazon s3 ....')
 
-                fileListUrls.append({
-                    'isVideo':isVideo,
-                    'pixel':data['pixelColor'],
-                    'url':data['objectUrl']
-                })
 
 
         file.write(

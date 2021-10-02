@@ -8,22 +8,41 @@ from io import BytesIO
 
 
 class PixelController(object):
+      
+
+    def __init__(self,mode='production') -> None:
+        self.mode = mode
 
 
     def getPixelColor(self,imageStream:object) -> (str):
         """
           Se encarga de obtener el color del 
           pixel de la imagen
-        """  
-        imageObject = Image.open(BytesIO(imageStream))
-        imageObject = imageObject.convert('RGB')
-        loadImage = imageObject.load()
-        x = (imageObject.size[0]) / 50
-        y = (imageObject.size[1]) / 50
+        """
 
-        rgbPixelColor = loadImage[x,y]
-        #return str(rgbPixelColor)
-        return self.__rgb_to_gex(rgbPixelColor)
+        if self.mode == 'production':
+          imageObject = Image.open(BytesIO(imageStream))
+          imageObject = imageObject.convert('RGB')
+          loadImage = imageObject.load()
+          x = (imageObject.size[0]) / 50
+          y = (imageObject.size[1]) / 50
+
+          rgbPixelColor = loadImage[x,y]
+          #return str(rgbPixelColor)
+          return self.__rgb_to_gex(rgbPixelColor)
+        
+        elif self.mode == 'test':
+              imageObject = Image.open(imageStream)
+              imageObject = imageObject.convert('RGB')
+              loadImage = imageObject.load()
+              x = (imageObject.size[0]) / 50
+              y = (imageObject.size[1]) / 50
+
+              rgbPixelColor = loadImage[x,y]
+              return self.__rgb_to_gex(rgbPixelColor)
+        
+        else:
+              raise('Error mode')
 
 
     def __rgb_to_gex(self,rgb) -> (str):
