@@ -15,6 +15,10 @@ from rest_framework.pagination import LimitOffsetPagination
 from .serializers import ThreadSerializer,ThreadSerializerModel
 
 
+# Pagination
+from .customThreadPagination import CustomThreadPagination
+
+
 # Models
 from .models import (Thread)
 
@@ -164,7 +168,7 @@ class SubThreadApiPagination(ListAPIView):
       GET = api/v1/thread/sub/<threadId>/
     """
     serializer_class = ThreadSerializerModel
-    pagination_class = LimitOffsetPagination
+    pagination_class = CustomThreadPagination
     
 
     def get_queryset(self) -> (Thread):
@@ -178,7 +182,7 @@ class SubThreadApiPagination(ListAPIView):
 
             return subThreadsList
         
-        return []
+        return [{ 'id':'none' }]
 
 
 

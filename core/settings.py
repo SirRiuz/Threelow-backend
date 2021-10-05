@@ -90,7 +90,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Rest_framework
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_PAGINATION_CLASS': 'threads.customThreadPagination.CustomThreadPagination',
     'PAGE_SIZE':5
 }
 
@@ -145,7 +145,7 @@ USE_TZ = True
 AWS_KEY = ''
 AWS_SECRET_KEY = ''
 AWS_STATIC_URL = ''
-LOCAL_STATIC_URL = 'https://orange-gecko-65.loca.lt'
+LOCAL_STATIC_URL = 'https://serious-liger-89.loca.lt'
 
 
 STATIC_URL = '/static/'
