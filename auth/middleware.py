@@ -18,14 +18,23 @@ class AuthMiddleware(object):
     def __init__(self,get_response):
         self.get_response = get_response
 
+        # Urls que no nececitan un token para 
+        # ingresar
+        self.ACCES_URL = [
+            '/admin/',
+            '/api/v1/auth'
+        ]
+
     
     def __call__(self,request) -> (object):
         response = self.get_response(request)
         token = request.headers.get('token','None')
         result = AuthToken().decodeToken(token)
 
-        if (request.get_full_path() == '/api/v1/auth/'):
-            return response
+
+        for item in self.ACCES_URL:
+            if request.get_full_path().count(item) > 0:
+                return response
 
         if not result['error']:
             if not result['expirer']:
