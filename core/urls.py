@@ -8,6 +8,7 @@ from .settings import MEDIA_ROOT,MEDIA_URL
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/v1/',include('auth.urls')),
     path('api/v1/',include('threads.urls')),
     path('api/v1/',include('hashtag.urls')),
     path('api/v1/',include('reactions.urls')),

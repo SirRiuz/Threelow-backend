@@ -57,6 +57,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'auth.middleware.AuthMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -141,6 +142,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+CLIENT_SECRET_KEY = 'de3bbd0fd7945e42581643b18cdf28dd3ed61d9c3d541b7b016081564b65a3f3'
+CLIENT_VERSION = '1.0'
+
 
 AWS_KEY = ''
 AWS_SECRET_KEY = ''
@@ -160,5 +164,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 TRANSLATE_CONTROLLER_DIR = f'{BASE_DIR}/translator/translate.py'
-print(TRANSLATE_CONTROLLER_DIR)
 
