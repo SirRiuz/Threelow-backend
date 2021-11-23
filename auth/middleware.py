@@ -22,7 +22,10 @@ class AuthMiddleware(object):
         # ingresar
         self.ACCES_URL = [
             '/admin/',
-            '/api/v1/auth'
+            '/api/v1/auth',
+            '/api/v1/timeline', # TEST
+            '/api/v1/thread',   # TEST
+            '/api/v1/channel'
         ]
 
     

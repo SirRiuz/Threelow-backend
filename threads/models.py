@@ -23,6 +23,13 @@ class Thread(models.Model):
 
     id = models.CharField(max_length=200,null=False,primary_key=True,blank=False)
 
+    channel = models.ForeignKey(
+        to='channels.Channel',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+
     toThread = models.ForeignKey(
         to='self',
         on_delete=models.CASCADE,
@@ -66,6 +73,17 @@ class Thread(models.Model):
 
     isMediaFiles = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now_add=True)
+
+
+    @property
+    def channelData(self) -> (dict):
+        if self.channel:
+            return ({
+                'tag':self.channel.__str__(),
+                'icon':''
+            })
+
+        return None
 
 
     @property

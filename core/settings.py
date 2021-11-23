@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'timeline',
     'hashtag',
-    'reports'
+    'reports',
+    'channels'
 ]
 
 MIDDLEWARE = [
