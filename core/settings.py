@@ -54,11 +54,12 @@ INSTALLED_APPS = [
     'timeline',
     'hashtag',
     'reports',
-    'channels'
+    'channels',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
-    'auth.middleware.AuthMiddleware',
+    # 'auth.middleware.AuthMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -66,9 +67,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_HEADERS = ['*']
+
 
 TEMPLATES = [
     {
@@ -150,7 +158,7 @@ CLIENT_VERSION = '1.0'
 AWS_KEY = ''
 AWS_SECRET_KEY = ''
 AWS_STATIC_URL = ''
-LOCAL_STATIC_URL = 'https://serious-liger-89.loca.lt'
+LOCAL_STATIC_URL = 'http://127.0.0.1:8000'
 
 
 STATIC_URL = '/static/'

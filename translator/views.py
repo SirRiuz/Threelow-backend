@@ -1,6 +1,7 @@
 
 
 # Rest_framework
+from http.client import BAD_REQUEST
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.status import *
@@ -15,20 +16,21 @@ from .serializers import TranslatorSerializer
 class TranslatorController(APIView):
 
 
-    def get(self,request:object) -> (Response):
-        result = TranslatorSerializer(data=request.GET)
-        if result.is_valid():
-            text = result.get_translated_text(result.data)
-            return Response({
-                'status':'ok',
-                'to':result.data['to'],
-                'text':text
-            },status=HTTP_200_OK)
-
+    def post(self,request:object) -> (Response):
+        serialize = TranslatorSerializer(data=request.data)
+        
+        if not serialize.is_valid():
+            return Response({ 'status':'error' },status=BAD_REQUEST)
+        
+        data = serialize.translate(data=serialize.data)
+        
+        if not data:
+            return Response({ 'status':'error' },status=BAD_REQUEST)
+        
+        
         return Response({
-            'status':'error',
-            'messege':'Error by translating the text'
-        },status=HTTP_400_BAD_REQUEST)
-
+            'status':'ok',
+            'text':data
+        },status=HTTP_200_OK)
 
 

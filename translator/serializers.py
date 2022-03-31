@@ -9,21 +9,23 @@ from rest_framework import serializers
 import subprocess
 
 
+# Translator lib
+from .translate.gtranslator import Translator
+
 class TranslatorSerializer(serializers.Serializer):
 
     text = serializers.CharField(required=True)
-    tl = serializers.CharField(required=True)
     to = serializers.CharField(required=True)
-
-
-    def get_translated_text(self,data) -> (str):
-        tl = data['tl']
-        to = data['to']
-        text = data['text']
-
-        result = subprocess.check_output(f'python3 {TRANSLATE_CONTROLLER_DIR} {tl} {to} "{text}"',shell=True)
-        #print(str(result))
-        return result.decode("utf8").replace('\n','')
-
-
-
+    
+    
+    def translate(self,data:dict) -> (str):
+        data = Translator().translate({
+            'sl':'auto',
+            'tl':data['to'],
+            'text':data['text']
+        })
+        
+        if data.error:
+            return None
+        
+        return data.trans

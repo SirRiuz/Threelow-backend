@@ -1,0 +1,17 @@
+GET /translate_a/single?client=at&dt=t&dt=ld&dt=qc&dt=rm&dt=bd&dj=1&sl=en&tl=es&ie=UTF-8&oe=UTF-8&iid=xxxx.xxxx.xxx&q=Hello,%20my+name+is+Mateo,%20how+are+you?&inputm=2&itid=pk&otf=2 HTTP/2
+Host: translate.google.com
+Sec-Ch-Ua: " Not A;Brand";v="99", "Android";v="96"
+Sec-Ch-Ua-Mobile: ?0
+Sec-Ch-Ua-Platform: "Android"
+Upgrade-Insecure-Requests: 1
+User-Agent: AndroidTranslate/4.4.0.RC01.104701208-44000163 10 phone GTR_TRANS_WLOPV1_ANDROID GTR_TRANS_WLOPV1_DE_EN_AR
+X-Client-Data: CMOLywE=
+Sec-Fetch-Site: none
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Accept-Encoding: gzip, deflate
+Accept-Language: es-419,es;q=0.9
+connection:Keep-Alive
+
+
