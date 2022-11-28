@@ -1,8 +1,6 @@
 
 
 # Django
-from django.db import models
-from django.db.models import fields
 from rest_framework import serializers
 
 
@@ -10,8 +8,6 @@ from rest_framework import serializers
 from .models import Reaction,ThreadReaction
 
 
-# Utils
-from .utils import processReactionData
 
 
 
@@ -27,11 +23,16 @@ class ThreadReactionSerializerModel(serializers.ModelSerializer):
         fields = [ 'ownerReaction','thread','reactionData' ]
 
 
+class ThreadSerailizerModel(serializers.ModelSerializer):
+    class Meta(object):
+        model = Reaction
+        fields = '__all__'
+
+
 
 class ThreadReactionSerializer(serializers.Serializer):
 
     reaction = serializers.CharField(required=True)
-
 
     def create(self,data,modelThreadReaction,ip,threadId,threadModel,modelReaction) -> (dict):
         """
@@ -41,7 +42,6 @@ class ThreadReactionSerializer(serializers.Serializer):
         
         if threadObject:
             threadObject = threadObject[0]
-
             isAfterReaction = modelThreadReaction.objects.filter(
                 ownerReaction=ip,
                 thread=threadObject
@@ -53,12 +53,18 @@ class ThreadReactionSerializer(serializers.Serializer):
                 """
                 isAfterReaction = isAfterReaction[0]
                 isAfterReaction.delete()
+                return ({
+                    'messege':'Reaction delete',
+                    'reaction':threadObject.reactionsPreview
+                })
 
             reactionObject = modelReaction.objects.filter(name=data['reaction'])
+            
             if reactionObject:
                 """
                   Crea la nueva reaccion
                 """
+                reactionSize = modelThreadReaction.objects.filter(thread=threadObject)
                 reaction = modelThreadReaction.objects.create(
                     ownerReaction=ip,
                     thread=threadObject,
@@ -71,24 +77,17 @@ class ThreadReactionSerializer(serializers.Serializer):
                     'reaction':{
                         'id':reaction.reaction.id,
                         'name':reaction.reaction.name,
-                        'path':reaction.reaction.image.url
+                        'path':reaction.reaction.image.url,
+                        **reaction.thread.reactionsPreview
                     },
                     'owner':reaction.ownerReaction,
+                    'reactions':len(reactionSize),
                     'messege':'the reaction has been created for {id}'.format(id=threadId)
                 })
 
-            else:
-                return ({'messege':'Reaction delete'})
 
         return {}
 
-
-
-class ThreadSerailizerModel(serializers.ModelSerializer):
-
-    class Meta(object):
-        model = Reaction
-        fields = '__all__'
 
 
 

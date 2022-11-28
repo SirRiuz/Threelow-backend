@@ -8,3 +8,5 @@ media/*
 core/__pycache__/wsgi.cpython-38.pyc
 media/mediatest/*
 media/*.json
+migrations
+__pycache__

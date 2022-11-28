@@ -88,7 +88,11 @@ class Thread(models.Model):
 
     @property
     def reactionsPreview(self) -> (dict):
-        reactions = ThreadReaction.objects.filter(thread=self).values('reaction__name','reaction__id','reaction__image')
+        reactions = ThreadReaction.objects.filter(thread=self).values(
+            'reaction__name',
+            'reaction__id',
+            'reaction__image'
+        )
         reactionObject = ({ })
 
         for rec in list(reactions):
@@ -130,7 +134,7 @@ class Thread(models.Model):
                 'subThreadsSize':thread.subThreadsSize,
                 'nativeLenguaje':thread.nativeLenguaje,
                 'reactionsPreview':thread.reactionsPreview,
-                'date':thread.date.strftime("%D"), # XX XX XXXX
+                'date':thread.date.strftime("%D"),
                 'owner':{
                     'agent':hashlib.sha256(thread.owner.encode()).hexdigest(),
                     'country':thread.ownerCountry
